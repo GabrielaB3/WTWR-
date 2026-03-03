@@ -1,0 +1,45 @@
+.card {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 323px;
+  height: 326px;
+}
+
+.card__name {
+  position: absolute;
+  top: 15px;
+  margin: 0;
+  background-color: white;
+  border-radius: 4px;
+  padding: 2px 12px;
+}
+
+.card__image {
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid;
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
+.card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.card__like-btn {
+  width: 22px;
+  height: 20px;
+  background-image: url("../../assets/heart-inactive.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.card__like-btn_active {
+  background-image: url("../../assets/heart-active.svg");
+}

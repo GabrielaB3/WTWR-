@@ -1,0 +1,15 @@
+.or__btn {
+  border: none;
+  background-color: transparent;
+  font-weight: 700;
+  padding: 0;
+  cursor: pointer;
+  margin-top: 32px; /* Separación del botón principal */
+  font-size: 16px; /* Un poco más pequeño que el principal para jerarquía */
+  color: rgba(0, 0, 0, 0.5); /* O el color que prefieras */
+  display: block; /* Para que se alinee bien debajo del botón principal */
+}
+
+.or__btn:hover {
+  color: #000;
+}

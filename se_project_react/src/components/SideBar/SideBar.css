@@ -1,0 +1,49 @@
+.sidebar {
+  margin-right: 116px;
+}
+
+.sidebar__user-container {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 16px;
+}
+
+.sidebar__username {
+  font-size: 20px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.sidebar__avatar {
+  flex: 0 0 40px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.sidebar__controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 24px;
+  gap: 12px;
+}
+
+.sidebar__edit-btn,
+.sidebar__logout-btn {
+  background: transparent;
+  border: none;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0;
+  color: #000;
+  font-family: inherit; /* Para asegurar que use la misma fuente */
+}
+
+.sidebar__edit-btn:hover,
+.sidebar__logout-btn:hover {
+  opacity: 0.6;
+}
