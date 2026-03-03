@@ -28,8 +28,12 @@ If it's 75°F and sunny, you'll see your summer gear. If a cold front hits, the 
 
 ## Link to project on GitHub Pages
 
-- [Link to the project](https://github.com/GabrielaB3/se_project_react.git)
+- [Link to the project](https://github.com/GabrielaB3/WTWR-.git)
 
-## Link to the Website
+## Link to Back End Project
 
-- [URL] (https://Gabrielab3.github.io/se_project_react)
+- [Link to the project](https://github.com/GabrielaB3/WTWR-/tree/main/se_project_express)
+
+## Link to Front End Project
+
+- [Link to the project](https://github.com/GabrielaB3/WTWR-/tree/main/se_project_react)
