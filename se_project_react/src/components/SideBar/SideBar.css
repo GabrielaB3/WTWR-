@@ -4,7 +4,7 @@
 
 .sidebar__user-container {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   align-items: center;
   gap: 16px;
 }
@@ -16,11 +16,12 @@
 }
 
 .sidebar__avatar {
-  flex: 0 0 40px;
+  width: 56px;
   height: 56px;
   border-radius: 50%;
   object-fit: cover;
   display: block;
+  flex-shrink: 0;
 }
 
 .sidebar__controls {
@@ -40,7 +41,8 @@
   cursor: pointer;
   padding: 0;
   color: #000;
-  font-family: inherit; /* Para asegurar que use la misma fuente */
+  font-family: inherit;
+  white-space: nowrap;
 }
 
 .sidebar__edit-btn:hover,

@@ -37,7 +37,6 @@
   position: relative;
   padding: 28px 28px 36px;
   max-width: 496px;
-  block-size: border-box;
   width: 100%;
   border-radius: 20px;
 }
@@ -80,7 +79,7 @@
   width: 86px;
   height: 36px;
   margin-top: 32px;
-  background-color: rgba(0, 0, 0);
+  background-color: #000;
   border: none;
   color: #fff;
   border-radius: 4px;
@@ -96,6 +95,6 @@
 
 .modal__button-container {
   display: flex;
-  align-items: center; /* Alineación vertical al centro */
-  gap: 12px; /* Espacio exacto entre el botón negro y el de texto */
+  align-items: center;
+  gap: 12px;
 }

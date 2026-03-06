@@ -1,4 +1,4 @@
-import React, { useContext } from "react"; // 1. Importar el hook
+import React, { useContext } from "react"; //
 import "./ItemModal.css";
 import closeBtn from "../../assets/closebtn.svg";
 import CurrentUserContext from "../../contexts/CurrentUserContext";

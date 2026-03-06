@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useFormWithValidation } from "../../hooks/useFormWithValidation";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import "./RegisterModal.css";
 
 const RegisterModal = ({
   isOpen,

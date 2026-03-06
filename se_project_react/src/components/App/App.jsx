@@ -10,7 +10,7 @@ import Profile from "../Profile/Profile";
 import AddItemModal from "../AddItemModal/AddItemModal";
 import RegisterModal from "../RegisterModal/RegisterModal";
 import LoginModal from "../LoginModal/LoginModal";
-import EditProfileModal from "../EditProfileModal/EditProfileModal"; // Importar el nuevo modal
+import EditProfileModal from "../EditProfileModal/EditProfileModal";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
@@ -25,6 +25,7 @@ function App() {
 
   // --- ESTADOS ---
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentUser, setCurrentUser] = useState({
     name: "",
     avatar: "",
@@ -53,7 +54,7 @@ function App() {
   const handleAddClick = () => setActiveModal("add-garment");
   const handleRegisterClick = () => setActiveModal("register");
   const handleLoginClick = () => setActiveModal("login");
-  const handleEditProfileClick = () => setActiveModal("edit-profile"); // Nuevo: Task 3
+  const handleEditProfileClick = () => setActiveModal("edit-profile");
   const closeActiveModal = () => setActiveModal("");
 
   // --- LÓGICA DE USUARIO (API) ---
@@ -74,7 +75,6 @@ function App() {
       .then((data) => {
         if (data.token) {
           localStorage.setItem("jwt", data.token);
-          // Opcional: Podrías llamar a checkToken aquí para obtener los datos del usuario de inmediato
           setIsLoggedIn(true);
           closeActiveModal();
           navigate("/profile");
@@ -88,21 +88,21 @@ function App() {
     api
       .updateCurrentUser({ name, avatar }, jwt)
       .then((updatedUser) => {
-        setCurrentUser(updatedUser); // Actualizamos el contexto global
+        // Usamos una función de actualización para asegurar el estado previo
+        setCurrentUser((prevUser) => ({
+          ...prevUser, // Mantenemos el _id y email existentes
+          ...updatedUser, // Sobrescribimos con los nuevos name y avatar
+        }));
         closeActiveModal();
       })
       .catch(console.error);
   };
 
+  // Limpieza total al salir
   const handleLogout = () => {
-    // Borra el "gafete" (token) de la memoria del navegador
     localStorage.removeItem("jwt");
-
-    // Actualiza los estados para que la interfaz sepa que ya no hay nadie
     setIsLoggedIn(false);
-    setCurrentUser({ name: "", avatar: "", _id: "" });
-
-    // Mandamos al usuario de vuelta a la página de inicio
+    setCurrentUser({ name: "", avatar: "", _id: "" }); // Reseteamos el contexto
     navigate("/");
   };
 
@@ -116,13 +116,19 @@ function App() {
       weather: inputValues.weatherType,
     };
 
+    setIsLoading(true);
     api
       .addItem(newCardData, jwt)
       .then((data) => {
         setClothingItems([data, ...clothingItems]);
         closeActiveModal();
       })
-      .catch(console.error);
+      .catch((err) => {
+        console.error("Error al añadir prenda:", err);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const handleDeleteCard = (cardId) => {
@@ -136,15 +142,14 @@ function App() {
       .catch(console.error);
   };
 
-  const handleCardLike = ({ id, isLiked }) => {
+  const handleCardLike = (id, isLiked) => {
     const token = localStorage.getItem("jwt");
 
-    // Si no le hemos dado like, llamamos a addCardLike, si ya tiene, a removeCardLike
+    // Decidimos el método basado en el estado actual de isLiked
     const apiMethod = !isLiked ? api.addCardLike : api.removeCardLike;
 
     apiMethod(id, token)
       .then((updatedCard) => {
-        // Buscamos la prenda en el estado y la reemplazamos con la que viene del servidor
         setClothingItems((cards) =>
           cards.map((item) => (item._id === id ? updatedCard : item)),
         );
@@ -154,7 +159,6 @@ function App() {
 
   // --- EFECTOS ---
 
-  // Cierre con Escape
   useEffect(() => {
     if (!activeModal) return;
     const handleEscClose = (e) => {
@@ -164,7 +168,6 @@ function App() {
     return () => document.removeEventListener("keydown", handleEscClose);
   }, [activeModal]);
 
-  // Carga inicial clima y ropa
   useEffect(() => {
     getWeather(coordinates, APIkey)
       .then((data) => setWeatherData(filterWeatherData(data)))
@@ -176,22 +179,24 @@ function App() {
       .catch(console.error);
   }, []);
 
-  // Persistencia de sesión
   useEffect(() => {
     const jwt = localStorage.getItem("jwt");
-    if (jwt) {
-      api
-        .checkToken(jwt)
-        .then((user) => {
-          setIsLoggedIn(true);
-          setCurrentUser(user);
-        })
-        .catch((err) => {
-          console.error("Token no válido", err);
-          localStorage.removeItem("jwt");
-          setIsLoggedIn(false);
-        });
-    }
+
+    // Si no hay token, no hacemos nada
+    if (!jwt) return;
+
+    // Si hay token, lo validamos una sola vez al cargar la app
+    api
+      .checkToken(jwt)
+      .then((user) => {
+        setIsLoggedIn(true);
+        setCurrentUser(user);
+      })
+      .catch((err) => {
+        console.error("No valid token", err);
+        localStorage.removeItem("jwt");
+        setIsLoggedIn(false);
+      });
   }, [isLoggedIn]);
 
   return (
@@ -243,6 +248,7 @@ function App() {
             isOpen={activeModal === "add-garment"}
             onClose={closeActiveModal}
             onAddItem={onAddItem}
+            isLoading={isLoading}
           />
 
           <ItemModal
@@ -270,6 +276,7 @@ function App() {
             isOpen={activeModal === "edit-profile"}
             onClose={closeActiveModal}
             onUpdateUser={handleUpdateUser}
+            isLoading={isLoading}
           />
         </div>
       </CurrentTemperatureUnitContext.Provider>

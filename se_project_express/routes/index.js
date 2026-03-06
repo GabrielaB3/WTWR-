@@ -4,11 +4,15 @@ const { getItems } = require("../controllers/clothingItems"); // Importamos getI
 const auth = require("../middlewares/auth"); // Importamos el middleware que acabas de crear
 const userRouter = require("./users");
 const clothingItemRouter = require("./clothingItems");
-const { NOT_FOUND } = require("../utils/errors");
+const { NotFoundError } = require("../utils/errors");
+const {
+  validateUserBody,
+  validateAuthentication,
+} = require("../middlewares/validation");
 
 // RUTAS PÚBLICAS
-router.post("/signup", createUser);
-router.post("/signin", login);
+router.post("/signup", validateUserBody, createUser);
+router.post("/signin", validateAuthentication, login);
 router.get("/items", getItems);
 
 // proteccion de rutas
@@ -18,8 +22,8 @@ router.use(auth);
 router.use("/users", userRouter);
 router.use("/items", clothingItemRouter);
 
-router.use((req, res) => {
-  res.status(NOT_FOUND).send({ message: "Requested resource not found" });
+router.use((req, res, next) => {
+  next(new NotFoundError("Requested resource not found"));
 });
 
 module.exports = router;

@@ -1,7 +1,7 @@
-import React, { useContext } from "react"; // 1. Importamos el hook
+import React, { useContext } from "react";
 import "./ClothesSection.css";
 import ItemCard from "../ItemCard/ItemCard";
-import CurrentUserContext from "../../contexts/CurrentUserContext"; // 2. Importamos el contexto
+import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 export default function ClothesSection({
   clothingItems,
@@ -11,16 +11,25 @@ export default function ClothesSection({
 }) {
   const currentUser = useContext(CurrentUserContext);
 
-  // Filtrar las prendas solo las que el owner coincide con el ID del usuario
+  // --- CORRECCIÓN DE SEGURIDAD PARA EL FILTRO ---
   const userItems = clothingItems.filter((item) => {
-    return item.owner === currentUser?._id;
+    // 1. Normalizamos: si owner es un objeto, tomamos el _id. Si es un string, lo usamos directo.
+    const ownerId =
+      typeof item.owner === "object" ? item.owner?._id : item.owner;
+
+    // 2. Comparamos el ID normalizado con el del usuario actual
+    return ownerId === currentUser?._id;
   });
 
   return (
     <div className="clothes-section">
       <div className="clothes-section__row">
         <p className="clothes__section-title">Your items</p>
-        <button onClick={handleAddClick} className="clothes-section__add-btn">
+        <button
+          onClick={handleAddClick}
+          className="clothes-section__add-btn"
+          type="button"
+        >
           + Add new
         </button>
       </div>
@@ -29,7 +38,7 @@ export default function ClothesSection({
         {userItems.map((item) => {
           return (
             <ItemCard
-              key={item._id} // Usamos _id que es el estándar de MongoDB
+              key={item._id}
               item={item}
               onCardClick={handleCardClick}
               onCardLike={onCardLike}

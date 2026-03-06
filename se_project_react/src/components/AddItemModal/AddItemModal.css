@@ -1,0 +1,9 @@
+.modal__radio-options {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal__submit {
+  width: 124px;
+  height: 36px;
+}

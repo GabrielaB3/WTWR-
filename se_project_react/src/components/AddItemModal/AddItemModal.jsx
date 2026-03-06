@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useFormWithValidation } from "../../hooks/useFormWithValidation";
 import "../../hooks/useFormWithValidation.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
+import "./AddItemModal.css";
 
 const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -37,8 +38,8 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
     handleChange,
     resetForm,
     errors,
-    validateForm,
     getFormErrors,
+    validateForm,
   } = useFormWithValidation(defaultValues, validationRules);
 
   useEffect(() => {
@@ -48,31 +49,21 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
     }
   }, [isOpen]);
 
-  const onSubmit = (formValues) => {
-    onAddItem(formValues);
-    onClose();
-  };
-
   const handleFormSubmit = (evt) => {
     evt.preventDefault();
 
-    // Get validation errors synchronously
     const formErrors = getFormErrors(values);
     const isFormValid = Object.keys(formErrors).length === 0;
 
     setIsSubmitted(true);
-    validateForm(values); // Update hook's state for error display
+    validateForm(values);
 
     if (isFormValid) {
-      onSubmit(values);
-      resetForm();
-      setIsSubmitted(false);
+      onAddItem(values);
     }
   };
 
   const handleFormChange = (evt) => {
-    // Activar isSubmitted en la primera interacción
-    setIsSubmitted(true);
     handleChange(evt);
   };
 
@@ -83,6 +74,7 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleFormSubmit}
+      buttonText="Add garment"
     >
       <label className="modal__label">
         Name
@@ -90,18 +82,15 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
           type="text"
           name="name"
           id="name"
-          className={`modal__input modal__input_type_card-name ${
-            isSubmitted && errors.name ? "form-input-error" : ""
+          className={`modal__input ${
+            isSubmitted && errors.name ? "modal__input_type_error" : ""
           }`}
           placeholder="Name"
           value={values.name}
           onChange={handleFormChange}
         />
         <span
-          className={`modal__error form-error ${
-            isSubmitted && errors.name ? "visible" : ""
-          }`}
-          id="place-name-error"
+          className={`modal__error ${isSubmitted && errors.name ? "modal__error_visible" : ""}`}
         >
           {errors.name}
         </span>
@@ -113,64 +102,70 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
           type="url"
           name="imageUrl"
           id="clothing-imageUrl"
-          className={`modal__input modal__input_type_url ${
-            isSubmitted && errors.imageUrl ? "form-input-error" : ""
+          className={`modal__input ${
+            isSubmitted && errors.imageUrl ? "modal__input_type_error" : ""
           }`}
           placeholder="Image URL"
           value={values.imageUrl}
           onChange={handleFormChange}
         />
         <span
-          className={`modal__error form-error ${
-            isSubmitted && errors.imageUrl ? "visible" : ""
-          }`}
-          id="place-name-erorr"
+          className={`modal__error ${isSubmitted && errors.imageUrl ? "modal__error_visible" : ""}`}
         >
           {errors.imageUrl}
         </span>
       </label>
+
       <fieldset className="modal__radio-buttons">
         <legend className="modal__legend">Select the weather type:</legend>
+        <div className="modal__radio-options">
+          <label htmlFor="hot" className="modal__label modal__label_type_radio">
+            <input
+              id="hot"
+              name="weatherType"
+              type="radio"
+              className="modal__radio-input"
+              value="hot"
+              checked={values.weatherType === "hot"}
+              onChange={handleFormChange}
+            />{" "}
+            Hot
+          </label>
 
-        <label htmlFor="hot" className="modal__label modal__label_type_radio">
-          <input
-            id="hot"
-            name="weatherType"
-            type="radio"
-            className="modal__radio-input"
-            value="hot"
-            onChange={handleFormChange}
-          />{" "}
-          Hot
-        </label>
+          <label
+            htmlFor="warm"
+            className="modal__label modal__label_type_radio"
+          >
+            <input
+              id="warm"
+              name="weatherType"
+              type="radio"
+              className="modal__radio-input"
+              value="warm"
+              checked={values.weatherType === "warm"}
+              onChange={handleFormChange}
+            />{" "}
+            Warm
+          </label>
 
-        <label htmlFor="warm" className="modal__label modal__label_type_radio">
-          <input
-            id="warm"
-            name="weatherType"
-            type="radio"
-            className="modal__radio-input"
-            value="warm"
-            onChange={handleFormChange}
-          />{" "}
-          Warm
-        </label>
-
-        <label htmlFor="cold" className="modal__label modal__label_type_radio">
-          <input
-            id="cold"
-            name="weatherType"
-            type="radio"
-            className="modal__radio-input"
-            value="cold"
-            onChange={handleFormChange}
-          />{" "}
-          Cold
-        </label>
+          <label
+            htmlFor="cold"
+            className="modal__label modal__label_type_radio"
+          >
+            <input
+              id="cold"
+              name="weatherType"
+              type="radio"
+              className="modal__radio-input"
+              value="cold"
+              checked={values.weatherType === "cold"}
+              onChange={handleFormChange}
+            />{" "}
+            Cold
+          </label>
+        </div>
         <span
-          className={`modal__error form-error ${
-            isSubmitted && errors.weatherType ? "visible" : ""
-          }`}
+          className={`modal__error ${isSubmitted && errors.weatherType ? "modal__error_visible" : ""}`}
         >
           {errors.weatherType}
         </span>

@@ -5,11 +5,13 @@ import CurrentUserContext from "../../contexts/CurrentUserContext";
 function ItemCard({ item, onCardClick, onCardLike }) {
   const currentUser = useContext(CurrentUserContext);
 
-  // Verificamos si al usuario actual le gusta esta prenda
-  // item.likes es un array de IDs de usuarios
-  const isLiked = item.likes.some((id) => id === currentUser?._id);
+  const isLiked =
+    Array.isArray(item.likes) &&
+    item.likes.some((user) => {
+      const userId = typeof user === "string" ? user : user?._id;
+      return userId === currentUser?._id;
+    });
 
-  // Clase dinámica para el botón (puedes definir el estilo en CSS)
   const itemLikeButtonClassName = `card__like-btn ${
     isLiked ? "card__like-btn_active" : ""
   }`;
@@ -18,13 +20,18 @@ function ItemCard({ item, onCardClick, onCardLike }) {
     onCardClick(item);
   };
 
-  // Esta es la función que pide el Task 4
   const handleLike = () => {
-    onCardLike({ id: item._id, isLiked: isLiked });
+    onCardLike(item._id, isLiked);
   };
 
   return (
     <li className="card">
+      <img
+        onClick={handleCardClick}
+        className="card__image"
+        src={item.imageUrl}
+        alt={item.name}
+      />
       <div className="card__header">
         <h2 className="card__name">{item.name}</h2>
         {/* Mostramos el botón solo si el usuario está logueado */}
@@ -33,15 +40,10 @@ function ItemCard({ item, onCardClick, onCardLike }) {
             className={itemLikeButtonClassName}
             type="button"
             onClick={handleLike}
+            aria-label={isLiked ? "Unlike" : "Like"}
           />
         )}
       </div>
-      <img
-        onClick={handleCardClick}
-        className="card__image"
-        src={item.imageUrl}
-        alt={item.name}
-      />
     </li>
   );
 }
