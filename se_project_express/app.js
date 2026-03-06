@@ -1,3 +1,4 @@
+require("dotenv").config(); // 1. IMPORTANTE: Carga las variables al inicio
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -7,18 +8,18 @@ const { errors } = require("celebrate");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 const app = express();
-const { PORT = 3001 } = process.env;
 
-const atlasURI =
-  "mongodb+srv://gbc2026:c3gAWivIzBl56LQ5@cluster0.rtinpbg.mongodb.net/";
+const { PORT = 3001, DATABASE_URL } = process.env;
+
+const atlasURI = DATABASE_URL || "mongodb://127.0.0.1:27017/wtwr_db";
 
 mongoose
   .connect(atlasURI)
   .then(() => {
-    console.log("Connected to MongoDB Atlas");
+    console.log("Connected to MongoDB");
   })
   .catch((err) => {
-    console.error("Error connecting to MongoDB Atlas:", err);
+    console.error("Error connecting to MongoDB:", err);
   });
 
 app.use(cors());
