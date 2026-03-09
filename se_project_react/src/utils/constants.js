@@ -175,3 +175,8 @@ export const coordinates = {
 };
 
 export const APIkey = "57d21ebd14fe6680d907bed35321eb9a";
+
+export const baseUrl =
+  process.env.NODE_ENV === "production"
+    ? "https://api.gabriela-wtwr.jumpingcrab.com"
+    : "http://localhost:3001";
