@@ -30,10 +30,10 @@ If it's 75°F and sunny, you'll see your summer gear. If a cold front hits, the 
 
 - [Link to the project](https://github.com/GabrielaB3/WTWR-.git)
 
-## Link to Back End Project
+## Link to Backend Project
 
 - [Link to the project](https://github.com/GabrielaB3/WTWR-/tree/main/se_project_express)
 
-## Link to Front End Project
+## Link to Frontend Project
 
 - [Link to the project](https://github.com/GabrielaB3/WTWR-/tree/main/se_project_react)

@@ -1,3 +1,5 @@
+/* eslint-disable max-classes-per-file */
+
 const ERROR_CODES = {
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
@@ -47,6 +49,14 @@ class ConflictError extends Error {
   }
 }
 
+class InternalServerError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "InternalServerError";
+    this.statusCode = ERROR_CODES.INTERNAL_SERVER_ERROR;
+  }
+}
+
 module.exports = {
   ERROR_CODES,
   BadRequestError,
@@ -54,4 +64,5 @@ module.exports = {
   ForbiddenError,
   NotFoundError,
   ConflictError,
+  InternalServerError,
 };

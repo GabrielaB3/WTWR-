@@ -44,6 +44,17 @@ This project was developed following software engineering best practices, focusi
 
 - Code Quality (Linting): Adheres to strict coding standards using ESLint (Google configuration) to ensure consistent, bug-free, and clean code.
 
+## Project domain
+
+[this link](api.gabriela-wtwr.jumpingcrab.com)
+
+## Link to Frontend Project
+
+- [Link to the project](https://github.com/GabrielaB3/WTWR-/tree/main/se_project_react)
+
 ## Project Pitch Video
 
-- Check out [this video](https://drive.google.com/file/d/1Mz5V0N2Ax4UIhrtX6PPSgZd3V651zFiV/view?usp=drive_link)
+Check out these videos, where I describe my project and some challenges I faced while building it:
+
+- [First Video](https://drive.google.com/file/d/1Mz5V0N2Ax4UIhrtX6PPSgZd3V651zFiV/view?usp=drive_link)
+- [Second Video](https://drive.google.com/file/d/1LhbSIQ1ZxNbVfJYbpciakAzSTf09RZZW/view?usp=sharing)

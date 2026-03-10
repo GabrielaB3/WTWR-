@@ -7,6 +7,7 @@ const {
   NotFoundError,
   UnauthorizedError,
   ConflictError,
+  InternalServerError,
 } = require("../utils/errors");
 
 const login = (req, res, next) => {
@@ -64,11 +65,7 @@ const createUser = (req, res, next) => {
 const getUsers = (req, res, next) => {
   User.find({})
     .then((users) => res.status(200).send(users))
-    .catch((err) => {
-      return next(
-        new InternalServerError("An error has occurred on the server.")
-      );
-    });
+    .catch(next);
 };
 
 const getCurrentUser = (req, res, next) => {
@@ -85,9 +82,7 @@ const getCurrentUser = (req, res, next) => {
       if (err.name === "CastError") {
         return next(new BadRequestError("Invalid data"));
       }
-      return next(
-        new InternalServerError("An error has occurred on the server.")
-      );
+      return next(err);
     });
 };
 
@@ -111,9 +106,7 @@ const updateUser = (req, res, next) => {
       if (err.name === "DocumentNotFoundError") {
         return next(new NotFoundError("User not found"));
       }
-      return next(
-        new InternalServerError("An error has occurred on the server.")
-      );
+      return next(err);
     });
 };
 

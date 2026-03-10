@@ -1,10 +1,10 @@
 require("dotenv").config();
+const { errors } = require("celebrate");
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const mainRouter = require("./routes/index");
 const errorHandler = require("./middlewares/error-handler");
-const { errors } = require("celebrate");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 
 const app = express();
@@ -26,6 +26,13 @@ app.use(cors());
 app.use(express.json());
 
 app.use(requestLogger);
+
+app.get("/crash-test", () => {
+  setTimeout(() => {
+    throw new Error("Server will crash now");
+  }, 0);
+});
+
 app.use("/", mainRouter);
 app.use(errorLogger);
 app.use(errors());

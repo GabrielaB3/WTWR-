@@ -21,6 +21,5 @@ module.exports = (req, res, next) => {
 
   req.user = payload;
 
-  // Si todo está bien, pasamos al siguiente controlador normal
   return next();
 };
